@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>PF-Protokoły — Baza</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#12181d; --panel:#1b232a; --panel2:#212b33; --line:#2c3841;
+    --ink:#e8edf1; --ink-dim:#8fa0ab; --amber:#e8a33d; --green:#4caf7d;
+    --red:#d9695f; --blue:#5b9bd5; --radius:10px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Segoe UI',Roboto,Arial,sans-serif; }
+  header{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#151c22 0%, #12181d 100%); border-bottom:1px solid var(--line); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; }
+  header h1{ margin:0; font-size:16px; font-weight:700; }
+  header .sub{ color:var(--ink-dim); font-size:11px; margin-top:2px; }
+  header button{ background:var(--panel2); border:1px solid var(--line); color:var(--ink-dim); padding:8px 12px; border-radius:8px; font-size:12px; }
+  main{ max-width:480px; margin:0 auto; padding:14px 14px 60px; }
+
+  /* login */
+  #loginView{ min-height:80vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .loginBox{ width:100%; max-width:340px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px; text-align:center; }
+  .loginBox h2{ margin:0 0 4px; font-size:18px; }
+  .loginBox p{ color:var(--ink-dim); font-size:12.5px; margin:0 0 18px; }
+  .loginBox input{ width:100%; box-sizing:border-box; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:12px; color:var(--ink); font-size:16px; text-align:center; letter-spacing:4px; margin-bottom:12px; }
+  .loginBox button{ width:100%; background:var(--amber); color:#20140a; border:none; border-radius:10px; padding:12px; font-size:14px; font-weight:700; }
+  .loginErr{ color:var(--red); font-size:12px; min-height:16px; margin-top:8px; }
+
+  .row{ display:flex; align-items:center; justify-content:space-between; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-bottom:8px; }
+  .row .name{ font-size:14px; }
+  .row .actions{ display:flex; gap:10px; align-items:center; }
+  .row .chev{ color:var(--ink-dim); }
+  .icon-btn{ background:none; border:none; padding:2px; font-size:16px; cursor:pointer; }
+  .icon-blue{ color:var(--blue); }
+  .icon-red{ color:var(--red); }
+
+  .searchbar{ width:100%; box-sizing:border-box; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; color:var(--ink); font-size:13px; margin-bottom:10px; }
+
+  .addbox{ background:var(--panel2); border:1px dashed var(--line); border-radius:var(--radius); padding:12px; margin-bottom:10px; }
+  .addbox input{ width:100%; box-sizing:border-box; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:9px; color:var(--ink); font-size:13px; margin-bottom:8px; }
+  .btnrow{ display:flex; gap:8px; }
+  .btnrow button{ flex:1; border:none; border-radius:8px; padding:9px; font-size:12.5px; font-weight:600; }
+  .btn-cancel{ background:none; border:1px solid var(--line) !important; color:var(--ink-dim); }
+  .btn-save{ background:var(--green); color:#0d1f13; }
+  .btn-primary{ background:var(--amber); color:#20140a; }
+
+  .addtrigger{ width:100%; background:none; border:1px dashed var(--line); color:var(--ink-dim); border-radius:var(--radius); padding:10px; font-size:12.5px; margin-bottom:14px; }
+
+  .breadcrumb{ display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+  .breadcrumb .back{ background:none; border:none; color:var(--ink-dim); font-size:18px; padding:4px; }
+  .breadcrumb h2{ margin:0; font-size:16px; font-weight:600; }
+
+  .toolbar{ display:flex; gap:8px; margin-bottom:14px; }
+  .toolbar button{ flex:1; background:var(--panel2); border:1px solid var(--line); color:var(--ink); border-radius:9px; padding:10px 4px; font-size:12px; }
+
+  .empty{ color:var(--ink-dim); font-size:12.5px; text-align:center; padding:30px 10px; }
+
+  .savetag{ position:fixed; top:8px; right:12px; font-size:10.5px; color:var(--ink-dim); background:var(--panel2); border:1px solid var(--line); padding:3px 8px; border-radius:6px; opacity:0; transition:opacity .3s; z-index:20;}
+  .savetag.show{ opacity:1; }
+  .savetag.err{ color:var(--red); }
+
+  #importInput{ display:none; }
+  .debugbtn{ display:block; margin:30px auto 0; background:none; border:none; color:var(--line); font-size:10px; }
+</style>
+</head>
+<body>
+
+<div class="savetag" id="savetag">zapisano</div>
+
+<div id="loginView">
+  <div class="loginBox">
+    <h2>PF-Protokoły</h2>
+    <p>Panel administratora — podaj hasło</p>
+    <input type="password" id="loginPass" inputmode="numeric" placeholder="•••••" maxlength="12">
+    <button id="loginBtn">Zaloguj</button>
+    <div class="loginErr" id="loginErr"></div>
+  </div>
+</div>
+
+<div id="appView" style="display:none">
+<header>
+  <div>
+    <h1>PF-Protokoły — Baza</h1>
+    <div class="sub" id="headerSub">Klienci</div>
+  </div>
+  <button id="logoutBtn">Wyloguj</button>
+</header>
+<main>
+  <div id="app"></div>
+  <button class="debugbtn" id="testConn">test połączenia</button>
+</main>
+</div>
+
+<input type="file" id="importInput" accept=".xlsx,.xls">
+
+<script>
+// ============ KONFIGURACJA ============
+// Po wdrożeniu Apps Script wklej tu URL kończący się na /exec
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbywWlAyFSWyBBEhw4qt9CLsaMGhLqzXx7L4harKkmEvJpmxMBGxC6xmsTVODcsfrYOf/exec';
+const ADMIN_PASSWORD = 'Hyousng$19892508';
+const SESSION_KEY = 'pf_admin_session';
+const SESSION_TTL_MS = 60 * 60 * 1000; // 1h nieaktywności
+
+// ============ SESJA / LOGOWANIE ============
+function getSession(){
+  try{ return JSON.parse(localStorage.getItem(SESSION_KEY)); }catch(e){ return null; }
+}
+function setSession(){
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() }));
+}
+function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+function sessionValid(){
+  const s = getSession();
+  if(!s || !s.ts) return false;
+  return (Date.now() - s.ts) < SESSION_TTL_MS;
+}
+function touchSession(){ if(sessionValid()) setSession(); }
+
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', (e)=>{ if(e.key==='Enter') doLogin(); });
+function doLogin(){
+  const val = document.getElementById('loginPass').value;
+  if(val === ADMIN_PASSWORD){
+    setSession();
+    showApp();
+  } else {
+    document.getElementById('loginErr').textContent = 'Nieprawidłowe hasło.';
+  }
+}
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  clearSession();
+  location.reload();
+});
+document.addEventListener('click', touchSession);
+document.addEventListener('keydown', touchSession);
+
+function showApp(){
+  document.getElementById('loginView').style.display = 'none';
+  document.getElementById('appView').style.display = 'block';
+  render();
+}
+
+if(sessionValid()){ showApp(); }
+
+// ============ API ============
+async function apiGet(params){
+  const url = GAS_URL + '?' + new URLSearchParams(Object.assign({token: ADMIN_PASSWORD}, params)).toString();
+  const res = await fetch(url);
+  return res.json();
+}
+async function apiPost(body){
+  const res = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(Object.assign({token: ADMIN_PASSWORD}, body))
+  });
+  return res.json();
+}
+function showSave(ok, msg){
+  const tag = document.getElementById('savetag');
+  tag.textContent = msg || (ok ? 'zapisano' : 'błąd zapisu');
+  tag.className = 'savetag show' + (ok ? '' : ' err');
+  clearTimeout(showSave._t);
+  showSave._t = setTimeout(()=> tag.classList.remove('show'), 1600);
+}
+
+document.getElementById('testConn').addEventListener('click', async ()=>{
+  try{
+    const r = await apiGet({action:'list_klienci'});
+    alert('Połączenie OK.\nOdpowiedź: ' + JSON.stringify(r).slice(0,200));
+  }catch(err){
+    alert('Fetch się nie wykonał: ' + err.message);
+  }
+});
+
+// ============ STAN ============
+let view = 'klienci'; // 'klienci' | 'obiekty'
+let klienci = [];
+let obiekty = [];
+let currentKlient = null;
+let searchKlient = '';
+let searchObiekt = '';
+let addKlientOpen = false;
+let addObiektOpen = false;
+
+async function loadKlienci(){
+  const r = await apiGet({action:'list_klienci'});
+  if(r.ok) klienci = r.data; else showSave(false, r.error||'błąd');
+}
+async function loadObiekty(klientId){
+  const r = await apiGet({action:'list_obiekty', klientId});
+  if(r.ok) obiekty = r.data; else showSave(false, r.error||'błąd');
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+async function render(){
+  const app = document.getElementById('app');
+  const sub = document.getElementById('headerSub');
+  if(view === 'klienci'){
+    sub.textContent = 'Klienci';
+    let html = '<input class="searchbar" id="searchKlient" placeholder="Szukaj klienta..." value="'+escapeHtml(searchKlient)+'">';
+    const list = klienci.filter(k => k.nazwa.toLowerCase().includes(searchKlient.toLowerCase()));
+    if(!list.length){
+      html += '<div class="empty">'+(klienci.length ? 'Brak wyników.' : 'Baza jest pusta — dodaj pierwszego klienta albo zaimportuj z Excela.')+'</div>';
+    } else {
+      list.forEach(k => {
+        html += '<div class="row krow" data-id="'+k.id+'"><span class="name">'+escapeHtml(k.nazwa)+'</span><span class="chev">›</span></div>';
+      });
+    }
+    if(addKlientOpen){
+      html += '<div class="addbox"><input id="newKlientName" placeholder="Nazwa klienta" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddKlient">Anuluj</button><button class="btn-save" id="saveAddKlient">Dodaj</button></div></div>';
+    } else {
+      html += '<button class="addtrigger" id="openAddKlient">+ dodaj klienta</button>';
+      html += '<div class="toolbar"><button id="importBtn">📥 Importuj z Excela</button></div>';
+    }
+    app.innerHTML = html;
+    bindKlienci();
+  } else {
+    sub.textContent = currentKlient ? currentKlient.nazwa : '';
+    let html = '<div class="breadcrumb"><button class="back" id="backToKlienci">‹</button><h2>'+escapeHtml(currentKlient.nazwa)+'</h2></div>';
+    html += '<input class="searchbar" id="searchObiekt" placeholder="Szukaj obiektu..." value="'+escapeHtml(searchObiekt)+'">';
+    const list = obiekty.filter(o => o.nazwa.toLowerCase().includes(searchObiekt.toLowerCase()));
+    if(!list.length){
+      html += '<div class="empty">'+(obiekty.length ? 'Brak wyników.' : 'Ten klient nie ma jeszcze żadnych obiektów.')+'</div>';
+    } else {
+      list.forEach(o => {
+        html += '<div class="row"><span class="name">'+escapeHtml(o.nazwa)+'</span><span class="actions"><button class="icon-btn icon-red delObiekt" data-id="'+o.id+'" title="Usuń">🗑</button></span></div>';
+      });
+    }
+    if(addObiektOpen){
+      html += '<div class="addbox"><input id="newObiektName" placeholder="Nazwa obiektu (np. Budynek A-4)" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddObiekt">Anuluj</button><button class="btn-save" id="saveAddObiekt">Dodaj</button></div></div>';
+    } else {
+      html += '<button class="addtrigger" id="openAddObiekt">+ dodaj obiekt</button>';
+    }
+    app.innerHTML = html;
+    bindObiekty();
+  }
+}
+
+function bindKlienci(){
+  const sk = document.getElementById('searchKlient');
+  sk.addEventListener('input', e => { searchKlient = e.target.value; render(); });
+  sk.focus(); sk.selectionStart = sk.value.length;
+
+  document.querySelectorAll('.krow').forEach(r => {
+    r.addEventListener('click', async () => {
+      const id = r.dataset.id;
+      currentKlient = klienci.find(k => k.id === id);
+      view = 'obiekty'; addObiektOpen = false; searchObiekt = '';
+      await loadObiekty(id);
+      render();
+    });
+  });
+
+  const oab = document.getElementById('openAddKlient');
+  if(oab) oab.addEventListener('click', () => { addKlientOpen = true; render(); });
+  const cab = document.getElementById('cancelAddKlient');
+  if(cab) cab.addEventListener('click', () => { addKlientOpen = false; render(); });
+  const sab = document.getElementById('saveAddKlient');
+  if(sab) sab.addEventListener('click', async () => {
+    const val = document.getElementById('newKlientName').value.trim();
+    if(!val) return;
+    const r = await apiPost({action:'add_klient', nazwa: val});
+    if(r.ok){ showSave(true); addKlientOpen = false; await loadKlienci(); render(); }
+    else showSave(false, r.error);
+  });
+
+  const ib = document.getElementById('importBtn');
+  if(ib) ib.addEventListener('click', () => document.getElementById('importInput').click());
+}
+
+function bindObiekty(){
+  document.getElementById('backToKlienci').addEventListener('click', () => {
+    view = 'klienci'; render();
+  });
+  const so = document.getElementById('searchObiekt');
+  so.addEventListener('input', e => { searchObiekt = e.target.value; render(); });
+  so.focus(); so.selectionStart = so.value.length;
+
+  document.querySelectorAll('.delObiekt').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      if(!confirm('Usunąć ten obiekt?')) return;
+      const id = btn.dataset.id;
+      const r = await apiPost({action:'delete_obiekt', id});
+      if(r.ok){ showSave(true); await loadObiekty(currentKlient.id); render(); }
+      else showSave(false, r.error);
+    });
+  });
+
+  const oao = document.getElementById('openAddObiekt');
+  if(oao) oao.addEventListener('click', () => { addObiektOpen = true; render(); });
+  const cao = document.getElementById('cancelAddObiekt');
+  if(cao) cao.addEventListener('click', () => { addObiektOpen = false; render(); });
+  const sao = document.getElementById('saveAddObiekt');
+  if(sao) sao.addEventListener('click', async () => {
+    const val = document.getElementById('newObiektName').value.trim();
+    if(!val) return;
+    const r = await apiPost({action:'add_obiekt', klientId: currentKlient.id, klientNazwa: currentKlient.nazwa, nazwa: val});
+    if(r.ok){ showSave(true); addObiektOpen = false; await loadObiekty(currentKlient.id); render(); }
+    else showSave(false, r.error);
+  });
+}
+
+// ============ IMPORT Z EXCELA ============
+document.getElementById('importInput').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, {type:'array'});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  const data = XLSX.utils.sheet_to_json(ws, {defval:''});
+  const rows = data.map(r => {
+    const klient = r['Klient'] || r['klient'] || r['KLIENT'] || Object.values(r)[0] || '';
+    const obiekt = r['Obiekt'] || r['obiekt'] || r['OBIEKT'] || Object.values(r)[1] || '';
+    return { klient: String(klient).trim(), obiekt: String(obiekt).trim() };
+  }).filter(r => r.klient && r.obiekt);
+
+  if(!rows.length){
+    alert('Nie znaleziono poprawnych wierszy (oczekiwane kolumny: Klient, Obiekt).');
+    e.target.value = '';
+    return;
+  }
+  if(!confirm('Zaimportować ' + rows.length + ' wierszy (klient + obiekt)?')) { e.target.value=''; return; }
+
+  const r = await apiPost({action:'bulk_import', rows});
+  e.target.value = '';
+  if(r.ok){
+    showSave(true, 'zaimportowano');
+    alert('Import zakończony.\nNowi klienci: ' + r.data.klienciDodani + '\nNowe obiekty: ' + r.data.obiektyDodane + '\nPominięte (puste): ' + r.data.pominiete);
+    await loadKlienci(); render();
+  } else {
+    alert('Import się nie udał: ' + r.error);
+  }
+});
+
+// ============ START ============
+(async function init(){
+  if(sessionValid()){
+    await loadKlienci();
+    render();
+  }
+})();
+</script>
+</body>
+</html>
