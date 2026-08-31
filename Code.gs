@@ -6,6 +6,7 @@
  * Endpointy:
  *  GET  ?action=list_klienci
  *  GET  ?action=list_obiekty&klientId=XXX
+ *  GET  ?action=list_urzadzenia&obiektId=XXX
  *  POST {action:'add_klient', nazwa}
  *  POST {action:'add_obiekt', klientId, klientNazwa, nazwa}
  *  POST {action:'delete_obiekt', id}
@@ -30,6 +31,14 @@ function getKlienciSheet() {
 function getObiektySheet() {
   const sheet = getSheet('Obiekty');
   if (sheet.getLastRow() === 0) sheet.appendRow(['ID', 'KlientID', 'KlientNazwa', 'Nazwa', 'DataUtworzenia']);
+  return sheet;
+}
+
+function getUrzadzeniaSheet() {
+  const sheet = getSheet('Urzadzenia');
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['ID', 'ObiektID', 'Grupa', 'Podgrupa', 'System', 'Producent', 'Model', 'SN', 'Lokalizacja', 'Typ', 'Uwagi', 'Status', 'Utworzono']);
+  }
   return sheet;
 }
 
@@ -104,6 +113,22 @@ function findObiektByNazwa(klientId, nazwa) {
   return null;
 }
 
+function listUrzadzenia(obiektId) {
+  const sheet = getUrzadzeniaSheet();
+  const rows = sheet.getDataRange().getValues();
+  const out = [];
+  for (let i = 1; i < rows.length; i++) {
+    if (!rows[i][0]) continue;
+    if (String(rows[i][1]) !== String(obiektId)) continue;
+    out.push({
+      id: rows[i][0], obiektId: rows[i][1], grupa: rows[i][2], podgrupa: rows[i][3], system: rows[i][4],
+      producent: rows[i][5], model: rows[i][6], sn: rows[i][7], lokalizacja: rows[i][8], typ: rows[i][9],
+      uwagi: rows[i][10], status: rows[i][11], utworzono: rows[i][12]
+    });
+  }
+  return out;
+}
+
 function addKlient(nazwa) {
   nazwa = String(nazwa).trim();
   if (!nazwa) throw new Error('Brak nazwy klienta');
@@ -172,6 +197,9 @@ function doGet(e) {
     }
     if (action === 'list_obiekty') {
       return jsonOut({ ok: true, data: listObiekty(e.parameter.klientId) });
+    }
+    if (action === 'list_urzadzenia') {
+      return jsonOut({ ok: true, data: listUrzadzenia(e.parameter.obiektId) });
     }
     return jsonOut({ ok: false, error: 'Nieznana akcja' });
   } catch (err) {

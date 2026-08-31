@@ -13,27 +13,23 @@
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Segoe UI',Roboto,Arial,sans-serif; }
-  header{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#151c22 0%, #12181d 100%); border-bottom:1px solid var(--line); padding:14px 16px; display:flex; align-items:center; justify-content:space-between; }
+  header{ position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#151c22 0%, #12181d 100%); border-bottom:1px solid var(--line); padding:14px 16px; }
   header h1{ margin:0; font-size:16px; font-weight:700; }
-  header .sub{ color:var(--ink-dim); font-size:11px; margin-top:2px; }
-  header button{ background:var(--panel2); border:1px solid var(--line); color:var(--ink-dim); padding:8px 12px; border-radius:8px; font-size:12px; }
-  main{ max-width:480px; margin:0 auto; padding:14px 14px 60px; }
+  main{ max-width:480px; margin:0 auto; padding:10px 14px 78px; }
 
-  /* login */
-  #loginView{ min-height:80vh; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .loginBox{ width:100%; max-width:340px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px; text-align:center; }
-  .loginBox h2{ margin:0 0 4px; font-size:18px; }
-  .loginBox p{ color:var(--ink-dim); font-size:12.5px; margin:0 0 18px; }
-  .loginBox input{ width:100%; box-sizing:border-box; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:12px; color:var(--ink); font-size:16px; text-align:center; letter-spacing:4px; margin-bottom:12px; }
-  .loginBox button{ width:100%; background:var(--amber); color:#20140a; border:none; border-radius:10px; padding:12px; font-size:14px; font-weight:700; }
-  .loginErr{ color:var(--red); font-size:12px; min-height:16px; margin-top:8px; }
+  .rolebar{ display:flex; align-items:center; justify-content:space-between; font-size:11px; margin-top:4px; }
+  .rolebar .rolebadge{ color:var(--amber); font-weight:700; }
+  .rolebar .rolelink{ background:none; border:none; color:var(--blue); font-size:11px; padding:2px 0; }
+
+  .crumb{ color:var(--ink-dim); font-size:11px; margin:8px 0; min-height:14px; }
 
   .row{ display:flex; align-items:center; justify-content:space-between; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-bottom:8px; }
+  .row .main{ display:flex; flex-direction:column; gap:2px; min-width:0; }
   .row .name{ font-size:14px; }
+  .row .sub{ font-size:11px; color:var(--ink-dim); }
   .row .actions{ display:flex; gap:10px; align-items:center; }
   .row .chev{ color:var(--ink-dim); }
   .icon-btn{ background:none; border:none; padding:2px; font-size:16px; cursor:pointer; }
-  .icon-blue{ color:var(--blue); }
   .icon-red{ color:var(--red); }
 
   .searchbar{ width:100%; box-sizing:border-box; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:10px 12px; color:var(--ink); font-size:13px; margin-bottom:10px; }
@@ -44,72 +40,117 @@
   .btnrow button{ flex:1; border:none; border-radius:8px; padding:9px; font-size:12.5px; font-weight:600; }
   .btn-cancel{ background:none; border:1px solid var(--line) !important; color:var(--ink-dim); }
   .btn-save{ background:var(--green); color:#0d1f13; }
-  .btn-primary{ background:var(--amber); color:#20140a; }
 
   .addtrigger{ width:100%; background:none; border:1px dashed var(--line); color:var(--ink-dim); border-radius:var(--radius); padding:10px; font-size:12.5px; margin-bottom:14px; }
 
-  .breadcrumb{ display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-  .breadcrumb .back{ background:none; border:none; color:var(--ink-dim); font-size:18px; padding:4px; }
-  .breadcrumb h2{ margin:0; font-size:16px; font-weight:600; }
+  .treehead{ display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .treehead .back{ background:none; border:none; color:var(--ink-dim); font-size:18px; padding:2px 6px 2px 0; }
+  .treehead h2{ margin:0; font-size:15px; font-weight:600; }
 
   .toolbar{ display:flex; gap:8px; margin-bottom:14px; }
   .toolbar button{ flex:1; background:var(--panel2); border:1px solid var(--line); color:var(--ink); border-radius:9px; padding:10px 4px; font-size:12px; }
 
-  .empty{ color:var(--ink-dim); font-size:12.5px; text-align:center; padding:30px 10px; }
+  .grow{ display:flex; justify-content:space-between; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px; margin-bottom:8px; }
+  .grow .cnt{ color:var(--ink-dim); font-size:11px; }
+  .pinicon{ background:none; border:none; font-size:16px; padding:2px 4px; color:var(--ink-dim); line-height:1; }
+  .pinicon.on{ color:var(--amber); }
+
+  .pincard{ background:var(--panel2); border:1px solid var(--amber); border-radius:var(--radius); padding:10px 12px; margin-bottom:8px; }
+  .pincard .lbl{ font-size:12.5px; color:var(--ink); margin-bottom:8px; }
+  .pincard .btns{ display:flex; gap:8px; }
+  .pincard button{ flex:1; border:none; border-radius:7px; padding:8px; font-size:11.5px; }
+  .pinenter{ background:var(--amber); color:#20140a; font-weight:600; }
+  .pinremove{ background:none; border:1px solid var(--line) !important; color:var(--ink-dim); }
+
+  .empty{ color:var(--ink-dim); font-size:12.5px; text-align:center; padding:24px 10px; }
+  .err{ color:var(--red); font-size:12px; margin:4px 0 8px; }
 
   .savetag{ position:fixed; top:8px; right:12px; font-size:10.5px; color:var(--ink-dim); background:var(--panel2); border:1px solid var(--line); padding:3px 8px; border-radius:6px; opacity:0; transition:opacity .3s; z-index:20;}
   .savetag.show{ opacity:1; }
   .savetag.err{ color:var(--red); }
 
+  .tabbar{ position:fixed; bottom:0; left:0; right:0; display:flex; background:#151c22; border-top:1px solid var(--line); z-index:10; }
+  .tabbar button{ flex:1; background:none; border:none; color:var(--ink-dim); padding:11px 4px 9px; font-size:12px; font-weight:600; }
+  .tabbar button.active{ color:var(--amber); }
+
+  #loginOverlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:30; align-items:center; justify-content:center; padding:20px; }
+  .loginBox{ width:100%; max-width:320px; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px; text-align:center; }
+  .loginBox h2{ margin:0 0 4px; font-size:16px; }
+  .loginBox p{ color:var(--ink-dim); font-size:12px; margin:0 0 14px; }
+  .loginBox input{ width:100%; box-sizing:border-box; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:11px; color:var(--ink); font-size:15px; text-align:center; margin-bottom:10px; }
+  .loginBox .btnrow button{ padding:10px; }
+  .loginBox .btn-primary{ background:var(--amber); color:#20140a; font-weight:700; }
+  .loginErr{ color:var(--red); font-size:12px; min-height:16px; margin-top:8px; }
+
   #importInput{ display:none; }
-  .debugbtn{ display:block; margin:30px auto 0; background:none; border:none; color:var(--line); font-size:10px; }
+  .debugbtn{ display:block; margin:20px auto 0; background:none; border:none; color:var(--line); font-size:10px; }
 </style>
 </head>
 <body>
 
 <div class="savetag" id="savetag">zapisano</div>
 
-<div id="loginView">
-  <div class="loginBox">
-    <h2>PF-Protokoły</h2>
-    <p>Panel administratora — podaj hasło</p>
-    <input type="password" id="loginPass" placeholder="•••••" maxlength="64">
-    <button id="loginBtn">Zaloguj</button>
-    <div class="loginErr" id="loginErr"></div>
-  </div>
-</div>
-
-<div id="appView" style="display:none">
 <header>
-  <div>
-    <h1>PF-Protokoły — Baza</h1>
-    <div class="sub" id="headerSub">Klienci</div>
+  <h1>PF-Protokoły</h1>
+  <div class="rolebar">
+    <span class="rolebadge" id="roleBadge">Serwisant</span>
+    <button class="rolelink" id="roleLinkBtn">Zaloguj jako administrator</button>
   </div>
-  <button id="logoutBtn">Wyloguj</button>
 </header>
 <main>
+  <div class="crumb" id="crumb"></div>
   <div id="app"></div>
   <button class="debugbtn" id="testConn">test połączenia</button>
 </main>
+
+<div class="tabbar">
+  <button class="active" id="tabBaza">Baza</button>
+  <button id="tabBrudnopis">Brudnopis</button>
+</div>
+
+<div id="loginOverlay">
+  <div class="loginBox">
+    <h2>Logowanie administratora</h2>
+    <p>Podaj hasło</p>
+    <input type="password" id="loginPass" placeholder="•••••" maxlength="64">
+    <div class="btnrow">
+      <button class="btn-cancel" id="loginCancel">Anuluj</button>
+      <button class="btn-primary" id="loginBtn">Zaloguj</button>
+    </div>
+    <div class="loginErr" id="loginErr"></div>
+  </div>
 </div>
 
 <input type="file" id="importInput" accept=".xlsx,.xls">
 
 <script>
 // ============ KONFIGURACJA ============
-// Po wdrożeniu Apps Script wklej tu URL kończący się na /exec
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbywWlAyFSWyBBEhw4qt9CLsaMGhLqzXx7L4harKkmEvJpmxMBGxC6xmsTVODcsfrYOf/exec';
 const ADMIN_PASSWORD = 'Hyousng$19892508';
 const SESSION_KEY = 'pf_admin_session';
 const SESSION_TTL_MS = 60 * 60 * 1000; // 1h nieaktywności
+const PIN_KEY = 'pf_pinned_folders';
 
-// ============ SESJA / LOGOWANIE ============
-function getSession(){
-  try{ return JSON.parse(localStorage.getItem(SESSION_KEY)); }catch(e){ return null; }
-}
-function setSession(){
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() }));
-}
+// Lista robocza — do potwierdzenia przez Pablo (patrz "Otwarte wątki" w pliku stanu projektu).
+const GROUPS = [
+  { key:'klima', label:'Klimatyzacja' },
+  { key:'centrale', label:'Centrale wentylacyjne' },
+  { key:'agregaty_wody', label:'Agregaty wody lodowej' },
+  { key:'nawilzacze', label:'Nawilżacze parowe' },
+  { key:'wentylatory', label:'Wentylatory wyciągowe' }
+];
+const PODGRUPY = [
+  { key:'split', label:'Split 1:1' },
+  { key:'multisplit', label:'Multisplit' },
+  { key:'vrf', label:'VRF' },
+  { key:'agregat_wody_k', label:'Agregat wody' },
+  { key:'agregat_freon', label:'Agregat freonowy' }
+];
+const PRZEGLADY_2026 = ['1 - Wiosna', '2 - Jesień'];
+
+// ============ SESJA / ROLA ============
+function getSession(){ try{ return JSON.parse(localStorage.getItem(SESSION_KEY)); }catch(e){ return null; } }
+function setSession(){ localStorage.setItem(SESSION_KEY, JSON.stringify({ ts: Date.now() })); }
 function clearSession(){ localStorage.removeItem(SESSION_KEY); }
 function sessionValid(){
   const s = getSession();
@@ -117,32 +158,37 @@ function sessionValid(){
   return (Date.now() - s.ts) < SESSION_TTL_MS;
 }
 function touchSession(){ if(sessionValid()) setSession(); }
+document.addEventListener('click', touchSession);
+document.addEventListener('keydown', touchSession);
 
-document.getElementById('loginBtn').addEventListener('click', doLogin);
-document.getElementById('loginPass').addEventListener('keydown', (e)=>{ if(e.key==='Enter') doLogin(); });
+let role = sessionValid() ? 'admin' : 'serwisant';
+
+function updateRoleBar(){
+  document.getElementById('roleBadge').textContent = role === 'admin' ? 'Administrator' : 'Serwisant';
+  document.getElementById('roleLinkBtn').textContent = role === 'admin' ? 'Wyloguj' : 'Zaloguj jako administrator';
+}
+function openLogin(){
+  document.getElementById('loginErr').textContent = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginOverlay').style.display = 'flex';
+  document.getElementById('loginPass').focus();
+}
+function closeLogin(){ document.getElementById('loginOverlay').style.display = 'none'; }
 function doLogin(){
   const val = document.getElementById('loginPass').value;
   if(val === ADMIN_PASSWORD){
-    setSession();
-    showApp();
+    setSession(); role = 'admin'; closeLogin(); updateRoleBar(); render();
   } else {
     document.getElementById('loginErr').textContent = 'Nieprawidłowe hasło.';
   }
 }
-document.getElementById('logoutBtn').addEventListener('click', ()=>{
-  clearSession();
-  location.reload();
+document.getElementById('roleLinkBtn').addEventListener('click', () => {
+  if(role === 'admin'){ clearSession(); role = 'serwisant'; updateRoleBar(); render(); }
+  else openLogin();
 });
-document.addEventListener('click', touchSession);
-document.addEventListener('keydown', touchSession);
-
-function showApp(){
-  document.getElementById('loginView').style.display = 'none';
-  document.getElementById('appView').style.display = 'block';
-  render();
-}
-
-if(sessionValid()){ showApp(); }
+document.getElementById('loginCancel').addEventListener('click', closeLogin);
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
 
 // ============ API ============
 async function apiGet(params){
@@ -165,7 +211,6 @@ function showSave(ok, msg){
   clearTimeout(showSave._t);
   showSave._t = setTimeout(()=> tag.classList.remove('show'), 1600);
 }
-
 document.getElementById('testConn').addEventListener('click', async ()=>{
   try{
     const r = await apiGet({action:'list_klienci'});
@@ -174,137 +219,352 @@ document.getElementById('testConn').addEventListener('click', async ()=>{
     alert('Fetch się nie wykonał: ' + err.message);
   }
 });
-
-// ============ STAN ============
-let view = 'klienci'; // 'klienci' | 'obiekty'
-let klienci = [];
-let obiekty = [];
-let currentKlient = null;
-let searchKlient = '';
-let searchObiekt = '';
-let addKlientOpen = false;
-let addObiektOpen = false;
-
-async function loadKlienci(){
-  const r = await apiGet({action:'list_klienci'});
-  if(r.ok) klienci = r.data; else showSave(false, r.error||'błąd');
-}
-async function loadObiekty(klientId){
-  const r = await apiGet({action:'list_obiekty', klientId});
-  if(r.ok) obiekty = r.data; else showSave(false, r.error||'błąd');
-}
-
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-async function render(){
-  const app = document.getElementById('app');
-  const sub = document.getElementById('headerSub');
-  if(view === 'klienci'){
-    sub.textContent = 'Klienci';
-    let html = '<input class="searchbar" id="searchKlient" placeholder="Szukaj klienta..." value="'+escapeHtml(searchKlient)+'">';
-    const list = klienci.filter(k => k.nazwa.toLowerCase().includes(searchKlient.toLowerCase()));
-    if(!list.length){
-      html += '<div class="empty">'+(klienci.length ? 'Brak wyników.' : 'Baza jest pusta — dodaj pierwszego klienta albo zaimportuj z Excela.')+'</div>';
-    } else {
-      list.forEach(k => {
-        html += '<div class="row krow" data-id="'+k.id+'"><span class="name">'+escapeHtml(k.nazwa)+'</span><span class="chev">›</span></div>';
-      });
-    }
-    if(addKlientOpen){
-      html += '<div class="addbox"><input id="newKlientName" placeholder="Nazwa klienta" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddKlient">Anuluj</button><button class="btn-save" id="saveAddKlient">Dodaj</button></div></div>';
-    } else {
-      html += '<button class="addtrigger" id="openAddKlient">+ dodaj klienta</button>';
-      html += '<div class="toolbar"><button id="importBtn">📥 Importuj z Excela</button></div>';
-    }
-    app.innerHTML = html;
-    bindKlienci();
-  } else {
-    sub.textContent = currentKlient ? currentKlient.nazwa : '';
-    let html = '<div class="breadcrumb"><button class="back" id="backToKlienci">‹</button><h2>'+escapeHtml(currentKlient.nazwa)+'</h2></div>';
-    html += '<input class="searchbar" id="searchObiekt" placeholder="Szukaj obiektu..." value="'+escapeHtml(searchObiekt)+'">';
-    const list = obiekty.filter(o => o.nazwa.toLowerCase().includes(searchObiekt.toLowerCase()));
-    if(!list.length){
-      html += '<div class="empty">'+(obiekty.length ? 'Brak wyników.' : 'Ten klient nie ma jeszcze żadnych obiektów.')+'</div>';
-    } else {
-      list.forEach(o => {
-        html += '<div class="row"><span class="name">'+escapeHtml(o.nazwa)+'</span><span class="actions"><button class="icon-btn icon-red delObiekt" data-id="'+o.id+'" title="Usuń">🗑</button></span></div>';
-      });
-    }
-    if(addObiektOpen){
-      html += '<div class="addbox"><input id="newObiektName" placeholder="Nazwa obiektu (np. Budynek A-4)" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddObiekt">Anuluj</button><button class="btn-save" id="saveAddObiekt">Dodaj</button></div></div>';
-    } else {
-      html += '<button class="addtrigger" id="openAddObiekt">+ dodaj obiekt</button>';
-    }
-    app.innerHTML = html;
-    bindObiekty();
-  }
+// ============ PINEZKI (localStorage, per przeglądarkę) ============
+function loadPinned(){ try{ return JSON.parse(localStorage.getItem(PIN_KEY)) || []; }catch(e){ return []; } }
+function savePinned(){ localStorage.setItem(PIN_KEY, JSON.stringify(pinned)); }
+let pinned = loadPinned();
+function pinKeyOf(klientId, obiektId, przeglad){ return klientId+'|'+obiektId+'|'+przeglad; }
+function isPinned(klientId, obiektId, przeglad){
+  return pinned.some(p => pinKeyOf(p.klientId,p.obiektId,p.przeglad) === pinKeyOf(klientId,obiektId,przeglad));
+}
+function togglePin(klientId, klientNazwa, obiektId, obiektNazwa, przeglad){
+  const key = pinKeyOf(klientId, obiektId, przeglad);
+  const idx = pinned.findIndex(p => pinKeyOf(p.klientId,p.obiektId,p.przeglad) === key);
+  if(idx > -1){ pinned.splice(idx,1); savePinned(); return true; }
+  if(pinned.length >= 2){ alert('Można przypiąć maksymalnie 2 foldery.'); return false; }
+  pinned.push({ klientId, klientNazwa, obiektId, obiektNazwa, przeglad, label: klientNazwa+' › '+obiektNazwa+' › 2026 › '+przeglad });
+  savePinned();
+  return true;
 }
 
-function bindKlienci(){
-  const sk = document.getElementById('searchKlient');
-  sk.addEventListener('input', e => { searchKlient = e.target.value; render(); });
-  sk.focus(); sk.selectionStart = sk.value.length;
+// ============ STAN DRZEWKA ============
+let tab = 'baza'; // 'baza' | 'brudnopis'
+let view = 'klient'; // klient|obiekt|rok|st|przeglad|grupa|podgrupa|system|urzadzenia
+let klienci = [];
+let obiekty = [];
+let urzadzenia = [];
+let cur = { klientId:null, klientNazwa:'', obiektId:null, obiektNazwa:'', przeglad:null, grupa:null, grupaLabel:'', podgrupa:null, system:null };
+let search = { klient:'', obiekt:'', urzadzenia:'' };
+let addKlientOpen = false, addObiektOpen = false;
+let errMsg = '';
 
-  document.querySelectorAll('.krow').forEach(r => {
-    r.addEventListener('click', async () => {
-      const id = r.dataset.id;
-      currentKlient = klienci.find(k => k.id === id);
-      view = 'obiekty'; addObiektOpen = false; searchObiekt = '';
-      await loadObiekty(id);
-      render();
+async function loadKlienci(){
+  errMsg = '';
+  try{
+    const r = await apiGet({action:'list_klienci'});
+    if(r.ok) klienci = r.data; else errMsg = r.error || 'Błąd odczytu';
+  }catch(err){ errMsg = 'Brak połączenia: ' + err.message; }
+}
+async function loadObiekty(klientId){
+  errMsg = '';
+  try{
+    const r = await apiGet({action:'list_obiekty', klientId});
+    if(r.ok) obiekty = r.data; else errMsg = r.error || 'Błąd odczytu';
+  }catch(err){ errMsg = 'Brak połączenia: ' + err.message; }
+}
+async function loadUrzadzenia(obiektId){
+  errMsg = '';
+  try{
+    const r = await apiGet({action:'list_urzadzenia', obiektId});
+    if(r.ok) urzadzenia = r.data; else { urzadzenia = []; errMsg = r.error || 'Błąd odczytu'; }
+  }catch(err){ urzadzenia = []; errMsg = 'Brak połączenia: ' + err.message; }
+}
+function countFor(grupa, podgrupa, system){
+  return urzadzenia.filter(u => {
+    if(u.grupa !== grupa) return false;
+    if(podgrupa && u.podgrupa !== podgrupa) return false;
+    if(system && u.system !== system) return false;
+    return true;
+  }).length;
+}
+function distinctSystems(){
+  const set = {};
+  urzadzenia.forEach(u => { if(u.grupa==='klima' && u.podgrupa==='vrf' && u.system) set[u.system]=true; });
+  return Object.keys(set).sort((a,b)=>a.localeCompare(b,'pl'));
+}
+
+function back(){
+  if(view==='obiekt') view='klient';
+  else if(view==='rok') view='obiekt';
+  else if(view==='przeglad' || view==='st') view='rok';
+  else if(view==='grupa') view='przeglad';
+  else if(view==='podgrupa'){ view='grupa'; cur.podgrupa=null; }
+  else if(view==='system'){ view='podgrupa'; cur.system=null; }
+  else if(view==='urzadzenia'){
+    if(cur.grupa==='klima' && cur.podgrupa==='vrf') view='system';
+    else if(cur.grupa==='klima') view='podgrupa';
+    else view='grupa';
+  }
+  render();
+}
+
+function crumbText(){
+  if(tab !== 'baza'){ document.getElementById('crumb').textContent=''; return; }
+  const parts = [];
+  if(cur.klientNazwa) parts.push(cur.klientNazwa);
+  if(cur.obiektNazwa) parts.push(cur.obiektNazwa);
+  if(view!=='klient' && view!=='obiekt') parts.push('2026');
+  if(cur.przeglad) parts.push(cur.przeglad);
+  if(cur.grupaLabel) parts.push(cur.grupaLabel);
+  if(cur.podgrupa) parts.push(PODGRUPY.find(p=>p.key===cur.podgrupa).label);
+  if(cur.system) parts.push(cur.system);
+  document.getElementById('crumb').textContent = parts.join(' › ');
+}
+function treehead(title, showBack){
+  return '<div class="treehead">'+(showBack?'<button class="back" id="backBtn">‹</button>':'')+'<h2>'+escapeHtml(title)+'</h2></div>';
+}
+function rowLeaf(name, sub){
+  return '<div class="row"><div class="main"><span class="name">'+name+'</span>'+(sub?'<span class="sub">'+sub+'</span>':'')+'</div></div>';
+}
+
+// ============ RENDER: BAZA ============
+function renderBaza(){
+  const app = document.getElementById('app');
+  let html = '';
+  if(errMsg) html += '<div class="err">'+escapeHtml(errMsg)+'</div>';
+
+  if(view === 'klient'){
+    html += '<input class="searchbar" id="sKlient" placeholder="Szukaj klienta..." value="'+escapeHtml(search.klient)+'">';
+    const list = klienci.filter(k => k.nazwa.toLowerCase().includes(search.klient.toLowerCase()));
+    if(!list.length) html += '<div class="empty">'+(klienci.length ? 'Brak wyników.' : 'Baza jest pusta — dodaj pierwszego klienta albo zaimportuj z Excela.')+'</div>';
+    list.forEach(k => { html += '<div class="row krow" data-id="'+k.id+'"><span class="name">'+escapeHtml(k.nazwa)+'</span><span class="chev">›</span></div>'; });
+    if(role === 'admin'){
+      if(addKlientOpen){
+        html += '<div class="addbox"><input id="newKlientName" placeholder="Nazwa klienta" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddKlient">Anuluj</button><button class="btn-save" id="saveAddKlient">Dodaj</button></div></div>';
+      } else {
+        html += '<button class="addtrigger" id="openAddKlient">+ dodaj klienta</button>';
+        html += '<div class="toolbar"><button id="importBtn">📥 Importuj z Excela</button></div>';
+      }
+    }
+  }
+
+  else if(view === 'obiekt'){
+    html += treehead(cur.klientNazwa, true);
+    html += '<input class="searchbar" id="sObiekt" placeholder="Szukaj obiektu..." value="'+escapeHtml(search.obiekt)+'">';
+    const list = obiekty.filter(o => o.nazwa.toLowerCase().includes(search.obiekt.toLowerCase()));
+    if(!list.length) html += '<div class="empty">'+(obiekty.length ? 'Brak wyników.' : 'Ten klient nie ma jeszcze żadnych obiektów.')+'</div>';
+    list.forEach(o => {
+      html += '<div class="row orow" data-id="'+o.id+'"><span class="name">'+escapeHtml(o.nazwa)+'</span><span class="actions">';
+      if(role==='admin') html += '<button class="icon-btn icon-red delObiekt" data-id="'+o.id+'" title="Usuń">🗑</button>';
+      html += '<span class="chev">›</span></span></div>';
     });
-  });
+    if(role === 'admin'){
+      if(addObiektOpen){
+        html += '<div class="addbox"><input id="newObiektName" placeholder="Nazwa obiektu" autofocus><div class="btnrow"><button class="btn-cancel" id="cancelAddObiekt">Anuluj</button><button class="btn-save" id="saveAddObiekt">Dodaj</button></div></div>';
+      } else {
+        html += '<button class="addtrigger" id="openAddObiekt">+ dodaj obiekt</button>';
+      }
+    }
+  }
+
+  else if(view === 'rok'){
+    html += treehead(cur.obiektNazwa, true);
+    html += '<div class="grow rokrow" data-r="2026"><span class="name">2026 (aktualny rok)</span><span class="cnt">'+PRZEGLADY_2026.join(' · ')+'</span></div>';
+    html += '<div class="grow rokrow" data-r="ST"><span class="name">ST — starsze lata</span><span class="cnt">skany PDF</span></div>';
+  }
+
+  else if(view === 'st'){
+    html += treehead('Starsze lata', true);
+    html += '<div class="empty">Starsze lata to zeskanowane PDF-y, poza strukturą tej appki. Zarządzanie nimi tutaj — w kolejnym etapie.</div>';
+  }
+
+  else if(view === 'przeglad'){
+    html += treehead('2026 — wybierz przegląd', true);
+    PRZEGLADY_2026.forEach(p => {
+      const on = isPinned(cur.klientId, cur.obiektId, p);
+      html += '<div class="grow przrow" data-p="'+escapeHtml(p)+'"><span class="name">'+escapeHtml(p)+'</span><button class="pinicon'+(on?' on':'')+' pintoggle" data-p="'+escapeHtml(p)+'" title="Przypnij">📌</button></div>';
+    });
+  }
+
+  else if(view === 'grupa'){
+    html += treehead(cur.przeglad, true);
+    GROUPS.forEach(g => {
+      const n = g.key==='klima' ? urzadzenia.filter(u=>u.grupa==='klima').length : countFor(g.key);
+      html += '<div class="grow growrow" data-g="'+g.key+'" data-label="'+escapeHtml(g.label)+'"><span class="name">'+escapeHtml(g.label)+'</span><span class="cnt">'+(n||'puste')+'</span></div>';
+    });
+  }
+
+  else if(view === 'podgrupa'){
+    html += treehead('Klimatyzacja — podgrupa', true);
+    PODGRUPY.forEach(p => {
+      const n = countFor('klima', p.key);
+      html += '<div class="grow pgrow" data-p="'+p.key+'"><span class="name">'+escapeHtml(p.label)+'</span><span class="cnt">'+(n||'puste')+'</span></div>';
+    });
+  }
+
+  else if(view === 'system'){
+    html += treehead('VRF — system', true);
+    const systems = distinctSystems();
+    if(!systems.length) html += '<div class="empty">Brak systemów VRF (jeszcze żadnych urządzeń).</div>';
+    systems.forEach(s => {
+      const n = countFor('klima','vrf',s);
+      html += '<div class="grow sysrow" data-s="'+escapeHtml(s)+'"><span class="name">'+escapeHtml(s)+'</span><span class="cnt">'+n+'</span></div>';
+    });
+  }
+
+  else if(view === 'urzadzenia'){
+    html += treehead('Urządzenia', true);
+    html += '<input class="searchbar" id="sUrz" placeholder="Szukaj (lokalizacja/model)..." value="'+escapeHtml(search.urzadzenia)+'">';
+    let list = urzadzenia.filter(u => u.grupa === cur.grupa);
+    if(cur.podgrupa) list = list.filter(u => u.podgrupa === cur.podgrupa);
+    if(cur.system) list = list.filter(u => u.system === cur.system);
+    const q = search.urzadzenia.toLowerCase();
+    if(q) list = list.filter(u => (u.lokalizacja||'').toLowerCase().includes(q) || (u.model||'').toLowerCase().includes(q));
+    if(!list.length) html += '<div class="empty">Brak urządzeń.</div>';
+    list.forEach(u => {
+      const title = (u.producent ? escapeHtml(u.producent)+' ' : '') + escapeHtml(u.model || '(bez modelu)');
+      const sub = escapeHtml(u.lokalizacja || '—') + (u.sn ? ' · '+escapeHtml(u.sn) : '');
+      html += rowLeaf(title, sub);
+    });
+  }
+
+  app.innerHTML = html;
+  bindBaza();
+}
+
+function bindBaza(){
+  const el = document.getElementById('app');
+  const b = el.querySelector('#backBtn'); if(b) b.addEventListener('click', back);
+
+  const sK = document.getElementById('sKlient');
+  if(sK){ sK.addEventListener('input', e => { search.klient = e.target.value; renderBaza(); }); sK.focus(); sK.selectionStart = sK.value.length; }
+  const sO = document.getElementById('sObiekt');
+  if(sO){ sO.addEventListener('input', e => { search.obiekt = e.target.value; renderBaza(); }); sO.focus(); sO.selectionStart = sO.value.length; }
+  const sU = document.getElementById('sUrz');
+  if(sU){ sU.addEventListener('input', e => { search.urzadzenia = e.target.value; renderBaza(); }); sU.focus(); sU.selectionStart = sU.value.length; }
+
+  el.querySelectorAll('.krow').forEach(r => r.addEventListener('click', async () => {
+    const k = klienci.find(x => String(x.id) === r.dataset.id);
+    cur.klientId = k.id; cur.klientNazwa = k.nazwa;
+    view = 'obiekt'; search.obiekt=''; addObiektOpen=false;
+    await loadObiekty(k.id);
+    render();
+  }));
 
   const oab = document.getElementById('openAddKlient');
-  if(oab) oab.addEventListener('click', () => { addKlientOpen = true; render(); });
+  if(oab) oab.addEventListener('click', () => { addKlientOpen = true; renderBaza(); document.getElementById('newKlientName').focus(); });
   const cab = document.getElementById('cancelAddKlient');
-  if(cab) cab.addEventListener('click', () => { addKlientOpen = false; render(); });
+  if(cab) cab.addEventListener('click', () => { addKlientOpen = false; renderBaza(); });
   const sab = document.getElementById('saveAddKlient');
   if(sab) sab.addEventListener('click', async () => {
-    const val = document.getElementById('newKlientName').value.trim();
-    if(!val) return;
-    const r = await apiPost({action:'add_klient', nazwa: val});
-    if(r.ok){ showSave(true); addKlientOpen = false; await loadKlienci(); render(); }
-    else showSave(false, r.error);
+    const v = document.getElementById('newKlientName').value.trim();
+    if(!v) return;
+    try{
+      const r = await apiPost({action:'add_klient', nazwa: v});
+      if(r.ok){ showSave(true); addKlientOpen=false; await loadKlienci(); renderBaza(); }
+      else { errMsg = r.error||'Nie udało się zapisać'; renderBaza(); }
+    }catch(err){ errMsg = 'Brak połączenia: ' + err.message; renderBaza(); }
   });
-
   const ib = document.getElementById('importBtn');
   if(ib) ib.addEventListener('click', () => document.getElementById('importInput').click());
-}
 
-function bindObiekty(){
-  document.getElementById('backToKlienci').addEventListener('click', () => {
-    view = 'klienci'; render();
-  });
-  const so = document.getElementById('searchObiekt');
-  so.addEventListener('input', e => { searchObiekt = e.target.value; render(); });
-  so.focus(); so.selectionStart = so.value.length;
-
-  document.querySelectorAll('.delObiekt').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      if(!confirm('Usunąć ten obiekt?')) return;
-      const id = btn.dataset.id;
-      const r = await apiPost({action:'delete_obiekt', id});
-      if(r.ok){ showSave(true); await loadObiekty(currentKlient.id); render(); }
-      else showSave(false, r.error);
-    });
-  });
-
+  el.querySelectorAll('.orow').forEach(r => r.addEventListener('click', async () => {
+    const o = obiekty.find(x => String(x.id) === r.dataset.id);
+    cur.obiektId = o.id; cur.obiektNazwa = o.nazwa;
+    view = 'rok';
+    await loadUrzadzenia(o.id);
+    render();
+  }));
+  el.querySelectorAll('.delObiekt').forEach(btn => btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if(!confirm('Usunąć ten obiekt?')) return;
+    try{
+      const r = await apiPost({action:'delete_obiekt', id: btn.dataset.id});
+      if(r.ok){ showSave(true); await loadObiekty(cur.klientId); renderBaza(); }
+      else { errMsg = r.error||'Nie udało się usunąć'; renderBaza(); }
+    }catch(err){ errMsg = 'Brak połączenia: ' + err.message; renderBaza(); }
+  }));
   const oao = document.getElementById('openAddObiekt');
-  if(oao) oao.addEventListener('click', () => { addObiektOpen = true; render(); });
+  if(oao) oao.addEventListener('click', () => { addObiektOpen = true; renderBaza(); document.getElementById('newObiektName').focus(); });
   const cao = document.getElementById('cancelAddObiekt');
-  if(cao) cao.addEventListener('click', () => { addObiektOpen = false; render(); });
+  if(cao) cao.addEventListener('click', () => { addObiektOpen = false; renderBaza(); });
   const sao = document.getElementById('saveAddObiekt');
   if(sao) sao.addEventListener('click', async () => {
-    const val = document.getElementById('newObiektName').value.trim();
-    if(!val) return;
-    const r = await apiPost({action:'add_obiekt', klientId: currentKlient.id, klientNazwa: currentKlient.nazwa, nazwa: val});
-    if(r.ok){ showSave(true); addObiektOpen = false; await loadObiekty(currentKlient.id); render(); }
-    else showSave(false, r.error);
+    const v = document.getElementById('newObiektName').value.trim();
+    if(!v) return;
+    try{
+      const r = await apiPost({action:'add_obiekt', klientId: cur.klientId, klientNazwa: cur.klientNazwa, nazwa: v});
+      if(r.ok){ showSave(true); addObiektOpen=false; await loadObiekty(cur.klientId); renderBaza(); }
+      else { errMsg = r.error||'Nie udało się zapisać'; renderBaza(); }
+    }catch(err){ errMsg = 'Brak połączenia: ' + err.message; renderBaza(); }
   });
+
+  el.querySelectorAll('.rokrow').forEach(r => r.addEventListener('click', () => {
+    view = r.dataset.r === 'ST' ? 'st' : 'przeglad';
+    render();
+  }));
+
+  el.querySelectorAll('.przrow').forEach(r => r.addEventListener('click', () => {
+    cur.przeglad = r.dataset.p; view = 'grupa';
+    render();
+  }));
+  el.querySelectorAll('.pintoggle').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePin(cur.klientId, cur.klientNazwa, cur.obiektId, cur.obiektNazwa, btn.dataset.p);
+    renderBaza();
+  }));
+
+  el.querySelectorAll('.growrow').forEach(r => r.addEventListener('click', () => {
+    cur.grupa = r.dataset.g; cur.grupaLabel = r.dataset.label; cur.podgrupa=null; cur.system=null;
+    view = (cur.grupa === 'klima') ? 'podgrupa' : 'urzadzenia';
+    render();
+  }));
+  el.querySelectorAll('.pgrow').forEach(r => r.addEventListener('click', () => {
+    cur.podgrupa = r.dataset.p; cur.system=null;
+    view = (cur.podgrupa === 'vrf') ? 'system' : 'urzadzenia';
+    render();
+  }));
+  el.querySelectorAll('.sysrow').forEach(r => r.addEventListener('click', () => {
+    cur.system = r.dataset.s; view = 'urzadzenia';
+    render();
+  }));
 }
 
-// ============ IMPORT Z EXCELA ============
+// ============ RENDER: BRUDNOPIS ============
+function updateBrudnopisBadge(){
+  document.getElementById('tabBrudnopis').textContent = 'Brudnopis' + (pinned.length ? ' ('+pinned.length+')' : '');
+}
+function renderBrudnopis(){
+  const app = document.getElementById('app');
+  let html = '<div style="font-size:11px;color:var(--ink-dim);margin-bottom:8px">Przypięte foldery ('+pinned.length+'/2)</div>';
+  if(!pinned.length) html += '<div class="empty">Brak przypiętych folderów. Przypnij z widoku Bazy (📌 przy Przeglądzie).</div>';
+  pinned.forEach((p,i) => {
+    html += '<div class="pincard"><div class="lbl">'+escapeHtml(p.label)+'</div><div class="btns"><button class="pinenter wejdz" data-i="'+i+'">Wejdź →</button><button class="pinremove odepnij" data-i="'+i+'">Odepnij</button></div></div>';
+  });
+  html += '<div class="empty" style="margin-top:18px">'+(role==='admin' ? 'Panel zatwierdzania zgłoszeń — w przygotowaniu (kolejny etap).' : 'Tworzenie nowych wpisów — w przygotowaniu (kolejny etap).')+'</div>';
+  app.innerHTML = html;
+
+  app.querySelectorAll('.wejdz').forEach(btn => btn.addEventListener('click', async () => {
+    const p = pinned[parseInt(btn.dataset.i)];
+    cur.klientId=p.klientId; cur.klientNazwa=p.klientNazwa;
+    cur.obiektId=p.obiektId; cur.obiektNazwa=p.obiektNazwa;
+    cur.przeglad=p.przeglad; cur.grupa=null; cur.grupaLabel=''; cur.podgrupa=null; cur.system=null;
+    await loadUrzadzenia(p.obiektId);
+    tab='baza'; view='grupa';
+    setActiveTab(); render();
+  }));
+  app.querySelectorAll('.odepnij').forEach(btn => btn.addEventListener('click', () => {
+    pinned.splice(parseInt(btn.dataset.i),1); savePinned(); render();
+  }));
+}
+
+// ============ TABY ============
+function setActiveTab(){
+  document.getElementById('tabBaza').classList.toggle('active', tab==='baza');
+  document.getElementById('tabBrudnopis').classList.toggle('active', tab==='brudnopis');
+}
+document.getElementById('tabBaza').addEventListener('click', () => { tab='baza'; setActiveTab(); render(); });
+document.getElementById('tabBrudnopis').addEventListener('click', () => { tab='brudnopis'; setActiveTab(); render(); });
+
+function render(){
+  crumbText();
+  updateBrudnopisBadge();
+  if(tab === 'baza') renderBaza(); else renderBrudnopis();
+}
+
+// ============ IMPORT Z EXCELA (Administrator) ============
 document.getElementById('importInput').addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if(!file) return;
@@ -325,23 +585,24 @@ document.getElementById('importInput').addEventListener('change', async (e) => {
   }
   if(!confirm('Zaimportować ' + rows.length + ' wierszy (klient + obiekt)?')) { e.target.value=''; return; }
 
-  const r = await apiPost({action:'bulk_import', rows});
-  e.target.value = '';
-  if(r.ok){
-    showSave(true, 'zaimportowano');
-    alert('Import zakończony.\nNowi klienci: ' + r.data.klienciDodani + '\nNowe obiekty: ' + r.data.obiektyDodane + '\nPominięte (puste): ' + r.data.pominiete);
-    await loadKlienci(); render();
-  } else {
-    alert('Import się nie udał: ' + r.error);
-  }
+  try{
+    const r = await apiPost({action:'bulk_import', rows});
+    e.target.value = '';
+    if(r.ok){
+      showSave(true, 'zaimportowano');
+      alert('Import zakończony.\nNowi klienci: ' + r.data.klienciDodani + '\nNowe obiekty: ' + r.data.obiektyDodane + '\nPominięte (puste): ' + r.data.pominiete);
+      await loadKlienci(); renderBaza();
+    } else {
+      alert('Import się nie udał: ' + r.error);
+    }
+  }catch(err){ e.target.value=''; alert('Fetch się nie wykonał: ' + err.message); }
 });
 
 // ============ START ============
+updateRoleBar();
 (async function init(){
-  if(sessionValid()){
-    await loadKlienci();
-    render();
-  }
+  await loadKlienci();
+  render();
 })();
 </script>
 </body>
